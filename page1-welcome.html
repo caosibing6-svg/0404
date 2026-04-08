@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>步骤1 · 打招呼</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  background: radial-gradient(ellipse at center, #0d1a30 0%, #050a14 100%);
+  display: flex; justify-content: center; align-items: center;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+.screen-wrapper { position: relative; width: 960px; height: 600px; }
+.screen-bezel {
+  position: absolute; inset: 0; border-radius: 24px;
+  background: linear-gradient(145deg, #22263a, #16192a);
+  box-shadow: 0 0 0 3px #2e3248, 0 0 80px rgba(0,170,255,0.15), 0 40px 100px rgba(0,0,0,0.9);
+  padding: 14px;
+}
+.camera-dot {
+  position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+  width: 7px; height: 7px; border-radius: 50%; background: #00e5ff; box-shadow: 0 0 8px #00e5ff;
+  animation: camBlink 3s infinite; z-index: 50;
+}
+@keyframes camBlink { 0%,92%,100%{opacity:1} 96%{opacity:0.1} }
+.screen {
+  width: 100%; height: 100%; border-radius: 18px; overflow: hidden; position: relative;
+  background: linear-gradient(180deg, #111830 0%, #0a0e20 100%);
+  display: flex; flex-direction: column;
+}
+.status-bar {
+  position: absolute; top: 12px; left: 20px; right: 20px;
+  display: flex; justify-content: space-between; align-items: center; z-index: 20;
+}
+.status-time { font-size: 12px; color: rgba(255,255,255,0.3); font-variant-numeric: tabular-nums; }
+.step-badge {
+  position: absolute; top: 12px; left: 20px;
+  background: rgba(0,80,160,0.25); border: 1px solid rgba(0,130,255,0.2);
+  border-radius: 50px; padding: 5px 14px;
+  font-size: 11px; color: rgba(0,200,255,0.5); z-index: 20; letter-spacing: 1px;
+}
+.top-banner {
+  background: rgba(0,100,200,0.12); border-bottom: 1px solid rgba(0,140,255,0.15);
+  padding: 10px 20px; font-size: 12px; color: rgba(0,200,255,0.5);
+  letter-spacing: 1px; text-align: center; margin-top: 36px;
+}
+.chat-area {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 16px 40px; position: relative;
+}
+.face-area { display: flex; flex-direction: column; align-items: center; margin-bottom: 24px; position: relative; }
+.face-glow {
+  position: absolute; width: 260px; height: 260px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,100,200,0.1) 0%, transparent 70%);
+  animation: haloPulse 4s ease-in-out infinite;
+}
+@keyframes haloPulse { 0%,100%{transform:scale(1);opacity:0.5} 50%{transform:scale(1.08);opacity:1} }
+.big-eyes { display: flex; gap: 28px; position: relative; z-index: 2; }
+.big-eye {
+  width: 110px; height: 110px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #60f0ff, #0099dd 45%, #004488);
+  box-shadow: 0 0 35px rgba(0,200,255,0.7), 0 0 70px rgba(0,150,255,0.3), inset 0 0 25px rgba(0,80,160,0.4);
+  animation: bigBlink 4s infinite; position: relative; overflow: hidden;
+}
+.big-eye::after {
+  content: ''; position: absolute; top: 18%; left: 22%;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,0.95); filter: blur(3px);
+}
+@keyframes bigBlink { 0%,44%,56%,100%{transform:scaleY(1)} 50%{transform:scaleY(0.08)} }
+.big-mouth {
+  width: 60px; height: 24px; border: 3px solid rgba(0,200,255,0.75);
+  border-top: none; border-radius: 0 0 38px 38px;
+  box-shadow: 0 0 18px rgba(0,200,255,0.45);
+  animation: bigSmile 2.5s ease-in-out infinite; margin-top: 18px;
+}
+@keyframes bigSmile { 0%,100%{transform:scaleX(1)} 50%{transform:scaleX(1.22)} }
+.dialogue-box {
+  background: rgba(0,50,110,0.25); border: 1px solid rgba(0,150,255,0.2);
+  border-radius: 18px; border-bottom-left-radius: 6px;
+  padding: 18px 24px; max-width: 520px; width: 100%; margin-bottom: 18px;
+}
+.dialogue-label { font-size: 10px; color: rgba(0,200,255,0.4); letter-spacing: 1px; margin-bottom: 8px; }
+.dialogue-text { font-size: 16px; color: rgba(255,255,255,0.92); line-height: 1.8; }
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 520px; }
+.opt-btn {
+  background: rgba(0,80,160,0.22); border: 1px solid rgba(0,150,255,0.28);
+  border-radius: 50px; padding: 13px 20px; color: rgba(255,255,255,0.88);
+  font-size: 15px; font-family: inherit; cursor: pointer; transition: all 0.22s;
+  display: flex; align-items: center; gap: 8px;
+}
+.opt-btn:hover {
+  background: rgba(0,120,200,0.38); border-color: rgba(0,180,255,0.5);
+  transform: translateY(-2px); box-shadow: 0 4px 18px rgba(0,100,200,0.3);
+}
+.opt-icon { font-size: 18px; }
+.mic-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 16px; }
+.mic-btn {
+  width: 50px; height: 50px; border-radius: 50%;
+  background: rgba(0,100,200,0.28); border: 1px solid rgba(0,150,255,0.25);
+  color: rgba(0,200,255,0.8); font-size: 20px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-family: inherit;
+}
+.mic-btn:hover { background: rgba(0,120,200,0.4); box-shadow: 0 0 15px rgba(0,150,255,0.3); }
+.mic-label { font-size: 12px; color: rgba(0,200,255,0.4); }
+.bottom-tip {
+  position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+  font-size: 11px; color: rgba(0,200,255,0.3); letter-spacing: 1px; z-index: 20;
+}
+</style>
+</head>
+<body>
+
+<div class="screen-wrapper">
+  <div class="screen-bezel">
+    <div class="camera-dot"></div>
+    <div class="screen">
+
+      <div class="step-badge">步骤 1/6 · 打招呼</div>
+
+      <div class="status-bar">
+        <span></span>
+        <div class="status-time" id="clockDisplay">16:00</div>
+      </div>
+
+      <div class="top-banner">🤖 智能迎宾 · 问答模式</div>
+
+      <div class="chat-area">
+        <div class="face-area">
+          <div class="face-glow"></div>
+          <div class="big-eyes">
+            <div class="big-eye"></div>
+            <div class="big-eye"></div>
+          </div>
+          <div class="big-mouth"></div>
+        </div>
+
+        <div class="dialogue-box">
+          <div class="dialogue-label">小智 · 迎宾助手</div>
+          <div class="dialogue-text">
+            您好！欢迎来到前海数智大厦 😊<br>
+            我是小智，请问有什么可以帮您的？
+          </div>
+        </div>
+
+        <div class="options-grid">
+          <button class="opt-btn" onclick="parent.showStep && parent.showStep(3)">
+            <span class="opt-icon">📝</span> 来访登记
+          </button>
+          <button class="opt-btn" onclick="alert('导航功能开发中')">
+            <span class="opt-icon">🗺️</span> 我要找...
+          </button>
+          <button class="opt-btn" onclick="alert('行政部在前台右侧')">
+            <span class="opt-icon">🏢</span> 行政部在哪
+          </button>
+          <button class="opt-btn" onclick="alert('洗手间在前台右手边')">
+            <span class="opt-icon">🚻</span> 洗手间在哪
+          </button>
+        </div>
+
+        <div class="mic-row">
+          <button class="mic-btn">🎤</button>
+          <span class="mic-label">按住说话，或点击上方选项</span>
+        </div>
+      </div>
+
+      <div class="bottom-tip">点击「来访登记」→ 进入登记流程 · 点击底部圆点切换页面</div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clockDisplay').textContent =
+    String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+}
+updateClock();
+setInterval(updateClock, 10000);
+</script>
+</body>
+</html>

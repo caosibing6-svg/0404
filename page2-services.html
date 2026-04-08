@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>步骤2 · 选择服务</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  background: radial-gradient(ellipse at center, #0d1a30 0%, #050a14 100%);
+  display: flex; justify-content: center; align-items: center;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+.screen-wrapper { position: relative; width: 960px; height: 600px; }
+.screen-bezel {
+  position: absolute; inset: 0; border-radius: 24px;
+  background: linear-gradient(145deg, #22263a, #16192a);
+  box-shadow: 0 0 0 3px #2e3248, 0 0 80px rgba(0,170,255,0.15), 0 40px 100px rgba(0,0,0,0.9);
+  padding: 14px;
+}
+.camera-dot {
+  position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+  width: 7px; height: 7px; border-radius: 50%; background: #00e5ff; box-shadow: 0 0 8px #00e5ff;
+  animation: camBlink 3s infinite; z-index: 50;
+}
+@keyframes camBlink { 0%,92%,100%{opacity:1} 96%{opacity:0.1} }
+.screen {
+  width: 100%; height: 100%; border-radius: 18px; overflow: hidden; position: relative;
+  background: linear-gradient(180deg, #111830 0%, #0a0e20 100%);
+  display: flex; flex-direction: column;
+}
+.status-bar {
+  position: absolute; top: 12px; left: 20px; right: 20px;
+  display: flex; justify-content: space-between; align-items: center; z-index: 20;
+}
+.status-time { font-size: 12px; color: rgba(255,255,255,0.3); font-variant-numeric: tabular-nums; }
+.step-badge {
+  position: absolute; top: 12px; left: 20px;
+  background: rgba(0,80,160,0.25); border: 1px solid rgba(0,130,255,0.2);
+  border-radius: 50px; padding: 5px 14px;
+  font-size: 11px; color: rgba(0,200,255,0.5); z-index: 20; letter-spacing: 1px;
+}
+.top-banner {
+  background: rgba(0,100,200,0.12); border-bottom: 1px solid rgba(0,140,255,0.15);
+  padding: 10px 20px; font-size: 12px; color: rgba(0,200,255,0.5);
+  letter-spacing: 1px; text-align: center; margin-top: 36px;
+}
+.service-cards {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 20px 60px; gap: 16px;
+}
+.section-title { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 6px; text-align: center; }
+.section-sub { font-size: 13px; color: rgba(0,200,255,0.5); margin-bottom: 16px; letter-spacing: 1px; }
+.service-list { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; width: 100%; max-width: 640px; }
+.svc-card {
+  background: rgba(0,50,100,0.2); border: 1px solid rgba(0,130,255,0.18);
+  border-radius: 16px; padding: 22px 16px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  cursor: pointer; transition: all 0.25s;
+}
+.svc-card:hover {
+  background: rgba(0,80,160,0.28); border-color: rgba(0,180,255,0.38);
+  transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,100,200,0.25);
+}
+.svc-icon { font-size: 36px; }
+.svc-name { font-size: 15px; color: rgba(255,255,255,0.9); font-weight: 600; }
+.svc-desc { font-size: 11px; color: rgba(0,200,255,0.5); text-align: center; line-height: 1.5; }
+.bottom-tip {
+  position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+  font-size: 11px; color: rgba(0,200,255,0.3); letter-spacing: 1px; z-index: 20;
+}
+</style>
+</head>
+<body>
+
+<div class="screen-wrapper">
+  <div class="screen-bezel">
+    <div class="camera-dot"></div>
+    <div class="screen">
+
+      <div class="step-badge">步骤 2/6 · 选择服务</div>
+
+      <div class="status-bar">
+        <span></span>
+        <div class="status-time" id="clockDisplay">16:00</div>
+      </div>
+
+      <div class="top-banner">📋 请选择您需要的服务</div>
+
+      <div class="service-cards">
+        <div class="section-title">请问您今天来？</div>
+        <div class="section-sub">点击对应卡片开始</div>
+
+        <div class="service-list">
+          <div class="svc-card" onclick="parent.showStep && parent.showStep(3)">
+            <div class="svc-icon">📝</div>
+            <div class="svc-name">来访登记</div>
+            <div class="svc-desc">访客登记、预约审批、二维码通行</div>
+          </div>
+          <div class="svc-card" onclick="alert('面试签到功能即将推出')">
+            <div class="svc-icon">💼</div>
+            <div class="svc-name">面试签到</div>
+            <div class="svc-desc">面试候选人快速签到登记</div>
+          </div>
+          <div class="svc-card" onclick="alert('快递代收功能即将推出')">
+            <div class="svc-icon">📦</div>
+            <div class="svc-name">快递代收</div>
+            <div class="svc-desc">外卖、快递代收通知领取</div>
+          </div>
+          <div class="svc-card" onclick="alert('会议室导览功能即将推出')">
+            <div class="svc-icon">🏠</div>
+            <div class="svc-name">会议室导览</div>
+            <div class="svc-desc">会议室位置查询与导航</div>
+          </div>
+          <div class="svc-card" onclick="alert('企业介绍功能即将推出')">
+            <div class="svc-icon">🏢</div>
+            <div class="svc-name">企业介绍</div>
+            <div class="svc-desc">了解本大厦入驻企业信息</div>
+          </div>
+          <div class="svc-card" onclick="parent.showStep && parent.showStep(1)">
+            <div class="svc-icon">💬</div>
+            <div class="svc-name">其他咨询</div>
+            <div class="svc-desc">其他问题，我来帮您解答</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-tip">点击「来访登记」卡片 → 进入登记流程 · 点击底部圆点切换页面</div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clockDisplay').textContent =
+    String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+}
+updateClock();
+setInterval(updateClock, 10000);
+</script>
+</body>
+</html>

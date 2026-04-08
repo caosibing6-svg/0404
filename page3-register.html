@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>步骤3 · 登记流程</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  background: radial-gradient(ellipse at center, #0d1a30 0%, #050a14 100%);
+  display: flex; justify-content: center; align-items: center;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+.screen-wrapper { position: relative; width: 960px; height: 600px; }
+.screen-bezel {
+  position: absolute; inset: 0; border-radius: 24px;
+  background: linear-gradient(145deg, #22263a, #16192a);
+  box-shadow: 0 0 0 3px #2e3248, 0 0 80px rgba(0,170,255,0.15), 0 40px 100px rgba(0,0,0,0.9);
+  padding: 14px;
+}
+.camera-dot {
+  position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+  width: 7px; height: 7px; border-radius: 50%; background: #00e5ff; box-shadow: 0 0 8px #00e5ff;
+  animation: camBlink 3s infinite; z-index: 50;
+}
+@keyframes camBlink { 0%,92%,100%{opacity:1} 96%{opacity:0.1} }
+.screen {
+  width: 100%; height: 100%; border-radius: 18px; overflow: hidden; position: relative;
+  background: linear-gradient(180deg, #111830 0%, #0a0e20 100%);
+  display: flex; flex-direction: column;
+}
+.status-bar {
+  position: absolute; top: 12px; left: 20px; right: 20px;
+  display: flex; justify-content: space-between; align-items: center; z-index: 20;
+}
+.status-time { font-size: 12px; color: rgba(255,255,255,0.3); font-variant-numeric: tabular-nums; }
+.step-badge {
+  position: absolute; top: 12px; left: 20px;
+  background: rgba(0,80,160,0.25); border: 1px solid rgba(0,130,255,0.2);
+  border-radius: 50px; padding: 5px 14px;
+  font-size: 11px; color: rgba(0,200,255,0.5); z-index: 20; letter-spacing: 1px;
+}
+.top-banner {
+  background: rgba(0,100,200,0.12); border-bottom: 1px solid rgba(0,140,255,0.15);
+  padding: 10px 20px; font-size: 12px; color: rgba(0,200,255,0.5);
+  letter-spacing: 1px; text-align: center; margin-top: 36px;
+}
+.reg-flow {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 16px 60px; gap: 0;
+}
+.reg-progress { display: flex; align-items: center; margin-bottom: 24px; width: 100%; max-width: 520px; }
+.rp-step { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; position: relative; }
+.rp-step::after {
+  content: ''; position: absolute; top: 14px; left: 50%; width: 100%; height: 2px;
+  background: rgba(0,100,200,0.2);
+}
+.rp-step:last-child::after { display: none; }
+.rp-step.done::after { background: rgba(0,200,100,0.5); }
+.rp-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(0,50,100,0.3); border: 2px solid rgba(0,120,255,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; color: rgba(255,255,255,0.4); z-index: 2; transition: all 0.3s;
+}
+.rp-step.active .rp-dot {
+  background: rgba(0,100,200,0.4); border-color: #00aaff;
+  color: #00aaff; box-shadow: 0 0 10px rgba(0,170,255,0.4);
+}
+.rp-step.done .rp-dot {
+  background: rgba(0,200,80,0.2); border-color: #00cc66; color: #00cc66;
+}
+.rp-label { font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 1px; }
+.rp-step.active .rp-label { color: #00aaff; }
+.rp-step.done .rp-label { color: rgba(0,200,100,0.6); }
+.reg-card {
+  background: rgba(0,40,90,0.22); border: 1px solid rgba(0,130,255,0.2);
+  border-radius: 20px; padding: 26px 32px;
+  max-width: 520px; width: 100%; margin-bottom: 14px;
+}
+.reg-question { font-size: 13px; color: rgba(0,200,255,0.5); letter-spacing: 1px; margin-bottom: 10px; }
+.reg-question-text { font-size: 19px; font-weight: 700; color: #fff; margin-bottom: 18px; }
+.reg-hint { font-size: 12px; color: rgba(255,255,255,0.25); margin-top: 8px; }
+.reg-input-wrap { display: flex; gap: 10px; }
+.reg-input {
+  flex: 1; background: rgba(0,30,70,0.35);
+  border: 1px solid rgba(0,130,255,0.25); border-radius: 50px;
+  padding: 12px 20px; color: #fff; font-size: 15px; font-family: inherit; outline: none;
+}
+.reg-input::placeholder { color: rgba(255,255,255,0.25); }
+.reg-send {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: linear-gradient(135deg, #0066ff, #0099ff);
+  border: none; color: #fff; font-size: 16px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,100,200,0.4); transition: all 0.2s; font-family: inherit;
+}
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 520px; }
+.opt-btn {
+  background: rgba(0,80,160,0.22); border: 1px solid rgba(0,150,255,0.28);
+  border-radius: 50px; padding: 13px 20px; color: rgba(255,255,255,0.88);
+  font-size: 15px; font-family: inherit; cursor: pointer; transition: all 0.22s;
+  display: flex; align-items: center; gap: 8px;
+}
+.opt-btn:hover {
+  background: rgba(0,120,200,0.38); border-color: rgba(0,180,255,0.5);
+  transform: translateY(-2px);
+}
+.opt-icon { font-size: 18px; }
+.bottom-tip {
+  position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+  font-size: 11px; color: rgba(0,200,255,0.3); letter-spacing: 1px; z-index: 20;
+}
+</style>
+</head>
+<body>
+
+<div class="screen-wrapper">
+  <div class="screen-bezel">
+    <div class="camera-dot"></div>
+    <div class="screen">
+
+      <div class="step-badge">步骤 3/6 · 登记流程</div>
+
+      <div class="status-bar">
+        <span></span>
+        <div class="status-time" id="clockDisplay">16:00</div>
+      </div>
+
+      <div class="top-banner">📝 访客登记 · 问答引导</div>
+
+      <div class="reg-flow">
+
+        <!-- 进度条 -->
+        <div class="reg-progress">
+          <div class="rp-step active" id="rp0">
+            <div class="rp-dot">1</div>
+            <div class="rp-label">姓名</div>
+          </div>
+          <div class="rp-step" id="rp1">
+            <div class="rp-dot">2</div>
+            <div class="rp-label">事由</div>
+          </div>
+          <div class="rp-step" id="rp2">
+            <div class="rp-dot">3</div>
+            <div class="rp-label">被访人</div>
+          </div>
+          <div class="rp-step" id="rp3">
+            <div class="rp-dot">4</div>
+            <div class="rp-label">确认</div>
+          </div>
+        </div>
+
+        <!-- 问答卡片 -->
+        <div class="reg-card">
+          <div class="reg-question">QUESTION <span>01</span></div>
+          <div class="reg-question-text">请问您的姓名是？</div>
+          <div class="reg-input-wrap">
+            <input class="reg-input" type="text" placeholder="请输入姓名..." />
+            <button class="reg-send">➤</button>
+          </div>
+          <div class="reg-hint">请说"我叫XXX"或直接输入姓名</div>
+        </div>
+
+        <!-- 快捷选项 -->
+        <div class="options-grid">
+          <button class="opt-btn" onclick="this.closest('.reg-card').querySelector('.reg-input').value='商务洽谈'">
+            <span class="opt-icon">🤝</span>商务洽谈
+          </button>
+          <button class="opt-btn" onclick="this.closest('.reg-card').querySelector('.reg-input').value='技术交流'">
+            <span class="opt-icon">💡</span>技术交流
+          </button>
+          <button class="opt-btn" onclick="this.closest('.reg-card').querySelector('.reg-input').value='项目合作'">
+            <span class="opt-icon">🚀</span>项目合作
+          </button>
+          <button class="opt-btn" onclick="this.closest('.reg-card').querySelector('.reg-input').value='面试'">
+            <span class="opt-icon">💼</span>面试
+          </button>
+        </div>
+
+      </div>
+
+      <div class="bottom-tip">问答式引导 · 姓名→事由→被访人→确认 → 点击底部圆点切换页面</div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clockDisplay').textContent =
+    String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+}
+updateClock();
+setInterval(updateClock, 10000);
+</script>
+</body>
+</html>
