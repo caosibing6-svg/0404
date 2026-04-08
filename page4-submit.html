@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>步骤4 · 提交成功</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  background: radial-gradient(ellipse at center, #0d1a30 0%, #050a14 100%);
+  display: flex; justify-content: center; align-items: center;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+.screen-wrapper { position: relative; width: 960px; height: 600px; }
+.screen-bezel {
+  position: absolute; inset: 0; border-radius: 24px;
+  background: linear-gradient(145deg, #22263a, #16192a);
+  box-shadow: 0 0 0 3px #2e3248, 0 0 80px rgba(0,170,255,0.15), 0 40px 100px rgba(0,0,0,0.9);
+  padding: 14px;
+}
+.camera-dot {
+  position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+  width: 7px; height: 7px; border-radius: 50%; background: #00e5ff; box-shadow: 0 0 8px #00e5ff;
+  animation: camBlink 3s infinite; z-index: 50;
+}
+@keyframes camBlink { 0%,92%,100%{opacity:1} 96%{opacity:0.1} }
+.screen {
+  width: 100%; height: 100%; border-radius: 18px; overflow: hidden; position: relative;
+  background: linear-gradient(180deg, #111830 0%, #0a0e20 100%);
+  display: flex; flex-direction: column;
+}
+.status-bar {
+  position: absolute; top: 12px; left: 20px; right: 20px;
+  display: flex; justify-content: space-between; align-items: center; z-index: 20;
+}
+.status-time { font-size: 12px; color: rgba(255,255,255,0.3); font-variant-numeric: tabular-nums; }
+.step-badge {
+  position: absolute; top: 12px; left: 20px;
+  background: rgba(0,80,160,0.25); border: 1px solid rgba(0,130,255,0.2);
+  border-radius: 50px; padding: 5px 14px;
+  font-size: 11px; color: rgba(0,200,255,0.5); z-index: 20; letter-spacing: 1px;
+}
+.top-banner {
+  background: rgba(0,100,200,0.12); border-bottom: 1px solid rgba(0,140,255,0.15);
+  padding: 10px 20px; font-size: 12px; color: rgba(0,200,255,0.5);
+  letter-spacing: 1px; text-align: center; margin-top: 36px;
+}
+.success-area {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 20px; gap: 18px;
+}
+.success-icon {
+  width: 90px; height: 90px; border-radius: 50%;
+  background: linear-gradient(135deg, rgba(0,180,80,0.2), rgba(0,220,100,0.1));
+  border: 3px solid #00cc66;
+  display: flex; align-items: center; justify-content: center;
+  animation: successPulse 2s ease-in-out infinite;
+  box-shadow: 0 0 30px rgba(0,200,80,0.3);
+}
+@keyframes successPulse {
+  0%,100%{transform: scale(1); box-shadow: 0 0 30px rgba(0,200,80,0.3);}
+  50%{transform: scale(1.05); box-shadow: 0 0 50px rgba(0,200,80,0.5);}
+}
+.check-mark {
+  font-size: 48px; color: #00cc66;
+  animation: checkBounce 0.6s ease-out;
+}
+@keyframes checkBounce {
+  0%{transform: scale(0); opacity: 0;}
+  50%{transform: scale(1.2);}
+  100%{transform: scale(1); opacity: 1;}
+}
+.success-title {
+  font-size: 28px; font-weight: 700; color: #fff;
+  display: flex; align-items: center; gap: 10px;
+}
+.success-badge {
+  background: linear-gradient(135deg, #00aa55, #00cc66);
+  padding: 4px 12px; border-radius: 50px;
+  font-size: 12px; color: #fff; font-weight: 600;
+}
+.success-sub {
+  font-size: 14px; color: rgba(255,255,255,0.5);
+  text-align: center; max-width: 400px; line-height: 1.8;
+}
+.info-cards {
+  display: flex; gap: 16px; margin-top: 8px;
+}
+.info-card {
+  background: rgba(0,50,100,0.2); border: 1px solid rgba(0,130,255,0.2);
+  border-radius: 14px; padding: 16px 20px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  min-width: 160px;
+}
+.info-icon { font-size: 28px; }
+.info-label { font-size: 11px; color: rgba(255,255,255,0.35); letter-spacing: 1px; }
+.info-value { font-size: 14px; color: #fff; font-weight: 600; }
+.sms-card {
+  background: rgba(0,40,80,0.25); border: 1px solid rgba(0,140,255,0.2);
+  border-radius: 16px; padding: 18px 24px;
+  max-width: 460px; width: 100%;
+}
+.sms-title {
+  font-size: 12px; color: rgba(0,200,255,0.5); letter-spacing: 1px;
+  margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+}
+.sms-content {
+  font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.8;
+}
+.sms-highlight { color: #00dd99; font-weight: 600; }
+.waiting-hint {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: rgba(0,200,255,0.5);
+  margin-top: 4px;
+}
+.waiting-dots {
+  display: flex; gap: 4px;
+}
+.waiting-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #00aaff; animation: dotBounce 1.4s ease-in-out infinite;
+}
+.waiting-dot:nth-child(2) { animation-delay: 0.2s;}
+.waiting-dot:nth-child(3) { animation-delay: 0.4s;}
+@keyframes dotBounce {
+  0%,100%{transform: translateY(0); opacity: 0.4;}
+  50%{transform: translateY(-6px); opacity: 1;}
+}
+.bottom-tip {
+  position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+  font-size: 11px; color: rgba(0,200,255,0.3); letter-spacing: 1px; z-index: 20;
+}
+</style>
+</head>
+<body>
+
+<div class="screen-wrapper">
+  <div class="screen-bezel">
+    <div class="camera-dot"></div>
+    <div class="screen">
+
+      <div class="step-badge">步骤 4/6 · 提交成功</div>
+
+      <div class="status-bar">
+        <span></span>
+        <div class="status-time" id="clockDisplay">16:00</div>
+      </div>
+
+      <div class="top-banner">✅ 登记已提交 · 等待审批</div>
+
+      <div class="success-area">
+
+        <div class="success-icon">
+          <span class="check-mark">✓</span>
+        </div>
+
+        <div class="success-title">
+          提交成功！
+          <span class="success-badge">已提交</span>
+        </div>
+
+        <div class="success-sub">
+          您的访客登记已成功提交<br>
+          被访人将收到短信审批通知，请保持手机畅通
+        </div>
+
+        <div class="info-cards">
+          <div class="info-card">
+            <span class="info-icon">👤</span>
+            <div class="info-label">访客</div>
+            <div class="info-value">张三</div>
+          </div>
+          <div class="info-card">
+            <span class="info-icon">📍</span>
+            <div class="info-label">访问地点</div>
+            <div class="info-value">A栋 12层</div>
+          </div>
+          <div class="info-card">
+            <span class="info-icon">📅</span>
+            <div class="info-label">来访时间</div>
+            <div class="info-value">今天 16:40</div>
+          </div>
+        </div>
+
+        <div class="sms-card">
+          <div class="sms-title">
+            <span>📱</span> 短信通知（将被访人手机）
+          </div>
+          <div class="sms-content">
+            【前海数智大厦】访客 <span class="sms-highlight">张三</span> 已提交来访登记，
+            因 <span class="sms-highlight">商务洽谈</span> 申请进入 A栋 12层 ，
+            请及时查看并完成审批。
+          </div>
+        </div>
+
+        <div class="waiting-hint">
+          <div class="waiting-dots">
+            <div class="waiting-dot"></div>
+            <div class="waiting-dot"></div>
+            <div class="waiting-dot"></div>
+          </div>
+          等待被访人审批中，审核结果将短信通知您
+        </div>
+
+      </div>
+
+      <div class="bottom-tip">提交成功 · 短信通知被访人 · 审批结果短信通知 → 点击底部圆点切换页面</div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clockDisplay').textContent =
+    String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+}
+updateClock();
+setInterval(updateClock, 10000);
+</script>
+</body>
+</html>
